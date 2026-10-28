@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<!-- saved from url=(0130)file:///C:/Users/LENOVO/Downloads/AegisAI%20-%20Intelligent%20Cybersecurity,%20Mobile%20Shield%20&%20Autonomous%20Defense%201.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AegisAI - Intelligent Cybersecurity, Mobile Shield &amp; Autonomous Defense</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+</head>
+<body>
+
+  <!-- Emergency Panic Lockdown Banner -->
+  <div id="emergencyLockdownBanner" class="emergency-banner active">
+    <span>🚨</span>
+    <span>EMERGENCY PHONE &amp; DEVICE LOCKDOWN ACTIVE: ALL EXTERNAL INGRESS TERMINATED — PHONES AND ENDPOINTS ISOLATED</span>
+    <button class="btn-inspect" style="background: #fff; color: #b30000; font-weight: 800; padding: 2px 10px;" onclick="window.releaseLockdown()">RELEASE LOCKDOWN</button>
+  </div>
+
+  <!-- Top Bar & Header -->
+  <header class="header-bar">
+    <div class="brand-section">
+      <div class="brand-icon-wrapper">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f2fe" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+          <path d="m9 12 2 2 4-4"></path>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-title">
+          AEGIS AI • CYBERSHIELD 50
+          <span class="brand-badge">SOC &amp; ADMIN v4.5</span>
+        </div>
+        <div class="brand-subtitle">Autonomous Cyber Threat Detection, RBAC Endpoint Protection &amp; Mobile Shield</div>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Public Portal Button -->
+      <button id="btnPublicPortal" class="btn-portal" onclick="window.showPublicPortal()" title="Switch to CyberShield Public Portal">
+        <span>🌐</span> Public Portal
+      </button>
+
+      <!-- Active RBAC Identity Pill -->
+      <div id="rbacUserPill" class="rbac-pill" onclick="window.openRbacModal()" title="Current RBAC Role &amp; User - Click to Switch Account">
+        <span class="rbac-dot"></span>
+        <span id="currentRbacRoleBadge" class="role-badge SUPER_ADMIN">SUPER_ADMIN</span>
+        <span id="currentRbacName" class="rbac-name">Sunny</span>
+        <span style="font-size: 11px; color: var(--text-dim);">▼</span>
+      </div>
+
+      <!-- Emergency Panic Button -->
+      <button id="btnEmergencyLockdown" class="btn-emergency-panic" title="RBAC Restricted: Requires Administrator role" onclick="window.triggerLockdown()" style="opacity: 1;">
+        <span>🚨</span> EMERGENCY LOCKDOWN
+      </button>
+
+      <div class="status-pill">
+        <span class="status-pulse"></span>
+        <span>TELEMETRY ACTIVE</span>
+      </div>
+
+      <button id="autoBlockToggle" class="btn-autoblock" title="Toggle autonomous threat mitigation"><span>⚠️</span> AUTONOMOUS SHIELD: DISABLED</button>
+
+      <button class="btn-quick-attack" onclick="window.launchSimulation('ddos')">
+        <span>⚡</span> Quick Test Attack
+      </button>
+    </div>
+  </header>
+
+  <!-- Navigation Tabs -->
+  <nav class="nav-tabs-wrapper">
+    <button class="nav-tab" data-tab="tab-admin-control">
+      <span>👑</span> Admin Control Center
+    </button>
+    <button class="nav-tab" data-tab="tab-user-portal">
+      <span>📝</span> User Enrolment &amp; Shield
+    </button>
+    <button class="nav-tab active" data-tab="tab-soc">
+      <span>🛰️</span> SOC Live Telemetry
+    </button>
+    <button class="nav-tab" data-tab="tab-mobile">
+      <span>📱</span> Phone &amp; Mobile Shield
+    </button>
+    <button class="nav-tab" data-tab="tab-source">
+      <span>📍</span> Codebase Target &amp; Source Forensics
+    </button>
+    <button class="nav-tab" data-tab="tab-stealth">
+      <span>🕵️</span> Stealth Cloak &amp; Honeypots
+    </button>
+    <button class="nav-tab" data-tab="tab-simulator">
+      <span>⚡</span> Attack Simulator (Cyber Range)
+    </button>
+    <button class="nav-tab" data-tab="tab-incidents">
+      <span>🚨</span> Incident Center <span class="tab-badge" id="alertBadgeCount">12</span>
+    </button>
+    <button class="nav-tab" data-tab="tab-ai">
+      <span>🧠</span> AI &amp; ML Analytics
+    </button>
+    <button class="nav-tab" data-tab="tab-ueba">
+      <span>👤</span> Identity &amp; UEBA
+    </button>
+    <button class="nav-tab" data-tab="tab-dlp">
+      <span>🔒</span> Data Protection (DLP)
+    </button>
+    <button class="nav-tab" data-tab="tab-firewall">
+      <span>🛡️</span> Active Defense &amp; Firewall
+    </button>
+    <button class="nav-tab" data-tab="tab-settings">
+      <span>⚙️</span> Deep Security Settings
+    </button>
+    <button class="nav-tab" data-tab="tab-reports">
+      <span>📄</span> Audit Reports
+    </button>
+  </nav>
+
+  <!-- KPI Ribbon -->
+  <section class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-title">Packets Inspected</span>
+        <span class="kpi-icon">📦</span>
+      </div>
+      <div class="kpi-value" id="kpiPackets">53,046</div>
+      <div class="kpi-subtext"><span>⚡</span> Microsecond flow aggregation</div>
+    </div>
+
+    <div class="kpi-card success">
+      <div class="kpi-header">
+        <span class="kpi-title">Threats Neutralized</span>
+        <span class="kpi-icon">🛡️</span>
+      </div>
+      <div class="kpi-value" id="kpiThreats" style="color: var(--accent-emerald);">18</div>
+      <div class="kpi-subtext"><span>✓</span> Autonomous multi-tier drop</div>
+    </div>
+
+    <div class="kpi-card critical">
+      <div class="kpi-header">
+        <span class="kpi-title">Active Alerts</span>
+        <span class="kpi-icon">🚨</span>
+      </div>
+      <div class="kpi-value" id="kpiAlerts" style="color: var(--accent-crimson);">12</div>
+      <div class="kpi-subtext"><span>●</span> Real-time forensic triage</div>
+    </div>
+
+    <div class="kpi-card success">
+      <div class="kpi-header">
+        <span class="kpi-title">Phone Endpoints Shielded</span>
+        <span class="kpi-icon">📱</span>
+      </div>
+      <div class="kpi-value" id="kpiPhones" style="color: var(--accent-blue);">3</div>
+      <div class="kpi-subtext"><span>✓</span> Android &amp; iOS MDM Active</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-title">Virtual Patches Active</span>
+        <span class="kpi-icon">📍</span>
+      </div>
+      <div class="kpi-value" id="kpiPatches" style="color: var(--accent-cyan);">0</div>
+      <div class="kpi-subtext"><span>🧠</span> Code location hotfixes</div>
+    </div>
+
+    <div class="kpi-card warning">
+      <div class="kpi-header">
+        <span class="kpi-title">DLP Leaks Intercepted</span>
+        <span class="kpi-icon">🔒</span>
+      </div>
+      <div class="kpi-value" id="kpiDlpLeaks" style="color: var(--accent-amber);">0</div>
+      <div class="kpi-subtext"><span>🛡️</span> PCI-DSS / HIPAA masked</div>
+    </div>
+
+    <div class="kpi-card">
+      <div class="kpi-header">
+        <span class="kpi-title">Engine Uptime</span>
+        <span class="kpi-icon">⏱️</span>
+      </div>
+      <div class="kpi-value" id="kpiUptime">00:21:49</div>
+      <div class="kpi-subtext"><span>●</span> Continuous protection</div>
+    </div>
+  </section>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- TAB 0: CyberShield 50 Admin Control Center & RBAC Management -->
+    <div id="tab-admin-control" class="tab-pane">
+
+      <!-- Admin KPI Stats -->
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card">
+          <div class="admin-stat-title">Total Registrations</div>
+          <div id="adminTotalUsers" class="admin-stat-number">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-title">Administrators</div>
+          <div id="adminTotalAdmins" class="admin-stat-number">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-title">Security Checks</div>
+          <div id="adminTotalChecks" class="admin-stat-number">8</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-title">Security Alerts</div>
+          <div id="adminTotalAlerts" class="admin-stat-number warn">2</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-title">Total Referrals</div>
+          <div id="adminTotalReferrals" class="admin-stat-number">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <div class="admin-stat-title">System Status</div>
+          <div id="adminSystemStatus" class="admin-stat-number warn">WARNING</div>
+        </div>
+      </div>
+
+      <!-- 5-Minute Continuous Security Watchdog -->
+      <div class="cyber-card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <span class="card-title">⏱️ Five-Minute Continuous Security Watchdog</span>
+          <span class="code-font" style="color: var(--accent-cyan);">AUTOMATED DEFENSE ENGINE</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+            The CyberShield browser engine runs an automated simulated security check every five minutes to monitor endpoint health, device integrity, and network anomalies. In enterprise deployment, an authorized endpoint agent reports hardware telemetry to this SOC server.
+          </p>
+          <div class="watchdog-timer-box">
+            <div>
+              <div style="font-size: 11px; text-transform: uppercase; color: #849bac; font-weight: 700;">Next Automatic Audit In</div>
+              <div id="monitorTimer" class="watchdog-timer-digits">03:11</div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <button class="btn-action blue" style="padding: 10px 18px; font-size: 13px;" onclick="window.runAdminSecurityCheck()">
+                🔍 Run Security Check Now
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Profile & Support Settings Grid -->
+      <div class="grid-1-1" style="margin-bottom: 20px;">
+        <!-- Current Admin Card & Password -->
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">👑 Authenticated Administrator Profile</span>
+            <span id="adminActiveRoleBadge" class="role-badge SUPER_ADMIN">SUPER_ADMIN</span>
+          </div>
+          <div class="card-body">
+            <div id="currentAdminInfo" style="color: #9db1c1; line-height: 1.8; margin-bottom: 16px;">
+        <strong>Name:</strong> Sunny<br>
+        <strong>Username:</strong> SUNNY<br>
+        <strong>RBAC Role:</strong> <span class="role-badge SUPER_ADMIN">SUPER_ADMIN</span><br>
+        <strong>Email:</strong> sunny@cybershield.org<br>
+        <strong>Referrals Attributed:</strong> 3
+      </div>
+            <div style="border-top: 1px solid #19394f; padding-top: 14px; margin-top: 10px;">
+              <h4 style="color: var(--accent-amber); font-size: 13px; margin-bottom: 10px;">🔑 Change Administrator Password</h4>
+              <div class="registration-grid" style="margin-top: 0; margin-bottom: 12px;">
+                <input id="oldAdminPasswordInput" class="form-input" type="password" placeholder="Current password">
+                <input id="newAdminPasswordInput" class="form-input" type="password" placeholder="New password (min 6 chars)">
+              </div>
+              <button class="btn-action yellow" onclick="window.changeAdminPassword()">
+                🔑 Update Password
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Security Support Settings & Referral Link -->
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">📞 Security Support &amp; Referral System</span>
+            <span class="code-font" style="color: var(--accent-emerald);">SOC ESCALATION DESK</span>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">
+              Authorized administrators can configure emergency support contact channels and generate personalized referral registration links.
+            </p>
+            <div class="registration-grid" style="margin-top: 0; margin-bottom: 12px;">
+              <div>
+                <label class="form-label">Support Emergency Phone</label>
+                <input id="adminSupportPhone" class="form-input" placeholder="+919000000000">
+              </div>
+              <div>
+                <label class="form-label">Support Escalation Email</label>
+                <input id="adminSupportEmail" class="form-input" type="email" placeholder="security@example.com">
+              </div>
+            </div>
+            <button id="btnSaveSupportSettings" class="btn-action green" onclick="window.saveAdminSupportSettings()" title="Save support details" style="opacity: 1;">
+              💾 Save Support Details
+            </button>
+
+            <div style="border-top: 1px solid #19394f; padding-top: 14px; margin-top: 16px;">
+              <h4 style="color: var(--accent-cyan); font-size: 13px; margin-bottom: 6px;">🔗 Administrator Referral Link</h4>
+              <div class="referral-link-display" id="adminReferralLink">file:///C:/Users/LENOVO/Downloads/AegisAI%20-%20Intelligent%20Cybersecurity,%20Mobile%20Shield%20&amp;%20Autonomous%20Defense%201.html?ref=ADMIN-SUNNY-01</div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn-action blue" onclick="window.copyAdminReferral()">📋 Copy Referral Link</button>
+                <button class="btn-action green" onclick="window.shareAdminReferral()">📤 Share Referral</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Role-Based Access Control (RBAC) Matrix -->
+      <div class="cyber-card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <span class="card-title">🛡️ Role-Based Access Control (RBAC) Governance Matrix</span>
+          <span class="code-font" style="color: var(--accent-cyan);">ENTERPRISE ACCESS POLICY</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px;">
+            Granular permissions enforced across all REST API endpoints and SOC control interfaces:
+          </p>
+          <div class="table-wrapper">
+            <table class="rbac-matrix-table">
+              <thead>
+                <tr>
+                  <th>Permission / Capability</th>
+                  <th>SUPER_ADMIN (Sunny)</th>
+                  <th>ADMIN (Alex Rivera)</th>
+                  <th>SOC_OPERATOR (Sarah Chen)</th>
+                  <th>REGISTERED_USER (Endpoints)</th>
+                  <th>PUBLIC_GUEST</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>Create / Manage Administrators</b></td>
+                  <td><span class="rbac-check">✓ Full (Add/Remove)</span></td>
+                  <td><span class="rbac-check">✓ Add Operator</span></td>
+                  <td><span class="rbac-cross">✗ Read Only</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+                <tr>
+                  <td><b>Delete Administrator Accounts</b></td>
+                  <td><span class="rbac-check">✓ Enforced Super Admin</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+                <tr>
+                  <td><b>Modify System Support Contact</b></td>
+                  <td><span class="rbac-check">✓ Allowed</span></td>
+                  <td><span class="rbac-check">✓ Allowed</span></td>
+                  <td><span class="rbac-cross">✗ Read Only</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+                <tr>
+                  <td><b>Registered Users Full CRUD</b></td>
+                  <td><span class="rbac-check">✓ Edit / Delete / Call</span></td>
+                  <td><span class="rbac-check">✓ Edit / Delete / Call</span></td>
+                  <td><span class="rbac-check">✓ View / Triage / Call</span></td>
+                  <td><span class="rbac-check">✓ Self Profile Edit Only</span></td>
+                  <td><span class="rbac-cross">✗ Enrol Only</span></td>
+                </tr>
+                <tr>
+                  <td><b>Launch Cyber Attack Simulations</b></td>
+                  <td><span class="rbac-check">✓ All Scenarios</span></td>
+                  <td><span class="rbac-check">✓ All Scenarios</span></td>
+                  <td><span class="rbac-check">✓ Read Telemetry</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+                <tr>
+                  <td><b>Active Drop Firewall (Quarantine IP)</b></td>
+                  <td><span class="rbac-check">✓ Block / Unblock</span></td>
+                  <td><span class="rbac-check">✓ Block / Unblock</span></td>
+                  <td><span class="rbac-cross">✗ Escalation Required</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+                <tr>
+                  <td><b>Emergency Phone &amp; Device Lockdown</b></td>
+                  <td><span class="rbac-check">✓ Trigger &amp; Release</span></td>
+                  <td><span class="rbac-check">✓ Trigger Only</span></td>
+                  <td><span class="rbac-cross">✗ Read Only</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+                <tr>
+                  <td><b>Virtual Patching &amp; Deep Settings</b></td>
+                  <td><span class="rbac-check">✓ Deploy Patches</span></td>
+                  <td><span class="rbac-check">✓ Deploy Patches</span></td>
+                  <td><span class="rbac-cross">✗ Read Only</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                  <td><span class="rbac-cross">✗ Denied</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Administrator & Administrator Accounts Directory Grid -->
+      <div class="grid-1-2" style="margin-bottom: 20px;">
+        <!-- Add Administrator Form -->
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">👑 Add Administrator</span>
+            <span class="code-font" style="color: var(--accent-emerald);">RBAC ENFORCED</span>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px;">
+              Only authorized administrators can provision elevated access credentials.
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <input id="newAdminNameInput" class="form-input" placeholder="Admin Full Name (e.g. Rachel Adams)">
+              <input id="newAdminUsernameInput" class="form-input" placeholder="Username (e.g. rachel.adams)">
+              <input id="newAdminPasswordInput" class="form-input" type="password" placeholder="Temporary Password">
+              <input id="newAdminEmailInput" class="form-input" type="email" placeholder="admin@cybershield.org">
+              <div>
+                <label class="form-label">Role Assignment</label>
+                <select id="newAdminRoleSelect" class="form-input">
+                  <option value="ADMIN">ADMIN - Security Administrator</option>
+                  <option value="SOC_OPERATOR">SOC_OPERATOR - Operations Analyst</option>
+                  <option value="SUPER_ADMIN">SUPER_ADMIN - Full Master Privileges</option>
+                </select>
+              </div>
+              <button id="btnAddAdmin" class="btn-action green" style="padding: 10px; width: 100%; justify-content: center; margin-top: 4px; opacity: 1;" onclick="window.addAdministrator()" title="Create new administrator">
+                ➕ Create Administrator
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Administrator Accounts Directory -->
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">👑 Administrator Accounts Directory</span>
+            <span class="code-font" style="color: var(--accent-cyan);" id="adminCountBadge">0 ADMINS</span>
+          </div>
+          <div class="card-body">
+            <div id="adminAccountsList" class="directory-list"><p style="color: var(--text-muted); font-size: 13px;">No administrators found.</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Registered Users Management Directory (CRUD) -->
+      <div class="cyber-card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <span class="card-title">👥 Registered Protected Endpoints &amp; Users Directory</span>
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <input id="userSearchInput" class="form-input" style="width: 220px; padding: 6px 12px; font-size: 12px;" placeholder="🔍 Filter by name, OS, IP..." oninput="window.filterRegisteredUsers()">
+            <button class="btn-action blue" onclick="window.showUserRegistrationTab()">➕ Enrol User</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px;">
+            All device registrations protected by CyberShield. Administrators have full management permissions (Edit, Delete, Call, and Email safety advisories).
+          </p>
+          <div id="registeredUsersContainer" class="directory-list"><p style="color: var(--text-muted); font-size: 13px;">No registered endpoints found. Click "Enrol User" to register a device.</p></div>
+        </div>
+      </div>
+
+      <!-- Cyber Attack Response Simulator (from File 1) -->
+      <div class="cyber-card simulation-panel" style="margin-bottom: 20px;">
+        <div class="card-header" style="border-bottom-color: #7e3044;">
+          <span class="card-title" style="color: #ff4f6d;">🚨 Cyber Attack Response Simulator (CyberShield Cyber Range)</span>
+          <span class="code-font" style="color: var(--accent-amber);">LIVE THREAT INJECTION</span>
+        </div>
+        <div class="card-body">
+          <div class="simulation-warning-box">
+            <strong>🛡️ SAFE HACKATHON DEMONSTRATION</strong><br>
+            This simulator does NOT attack an external device or phone number. It demonstrates what your enterprise SOC system displays when a critical cyber incident is detected across endpoints.
+          </div>
+
+          <div class="registration-grid" style="margin-top: 0; margin-bottom: 14px;">
+            <div>
+              <label class="form-label" style="color: #ff4f6d;">Target Registered Endpoint / User</label>
+              <select id="adminAttackTargetSelect" class="form-input"><option value="">Select registered user...</option></select>
+            </div>
+            <div>
+              <label class="form-label" style="color: #ff4f6d;">Attack Vector Category</label>
+              <select id="adminAttackTypeSelect" class="form-input">
+                <option value="Ransomware">🔐 Ransomware</option>
+                <option value="Spyware">👁️ Spyware</option>
+                <option value="Trojan">🐴 Trojan</option>
+                <option value="Worm">🪱 Worm</option>
+                <option value="Phishing">🎣 Phishing</option>
+                <option value="General Malware">🦠 General Malware</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="btnStartFile1Attack" class="btn-action red" style="padding: 10px 20px; font-size: 13px; opacity: 1;" onclick="window.startFile1AttackSimulation()" title="Start cyber attack simulation">
+            🚨 Start Simulated Attack
+          </button>
+
+          <div class="attack-progress-track">
+            <div id="adminAttackProgressBar" class="attack-progress-fill"></div>
+          </div>
+
+          <div id="adminAttackLogConsole" class="attack-terminal-console">
+            [ SYSTEM ] CyberShield Simulator ready for safe threat execution...
+          </div>
+        </div>
+      </div>
+
+      <!-- Malware Types Guide -->
+      <div class="cyber-card" style="margin-bottom: 20px;">
+        <div class="card-header">
+          <span class="card-title">🦠 Threat Classification &amp; Response Playbooks</span>
+          <span class="code-font" style="color: var(--accent-cyan);">CYBERSHIELD MITRE COMPLIANCE</span>
+        </div>
+        <div class="card-body">
+          <div class="malware-cards-grid">
+            <div class="malware-card">
+              <h4>🔐 Ransomware</h4>
+              <p>Can encrypt files and demand extortion. Response: Isolate affected endpoint immediately, activate phone lockdown, and restore from immutable air-gapped backup.</p>
+            </div>
+            <div class="malware-card">
+              <h4>👁️ Spyware</h4>
+              <p>Monitors keystrokes, camera, and device activity. Response: Terminate process, revoke OAuth tokens, run full deep heuristic scan, and deploy Mobile Shield.</p>
+            </div>
+            <div class="malware-card">
+              <h4>🐴 Trojan</h4>
+              <p>Disguised malicious payload providing unauthorized backdoors. Response: Block egress C2 IPs on firewall, apply virtual patch to vulnerable endpoint port.</p>
+            </div>
+            <div class="malware-card">
+              <h4>🪱 Worm</h4>
+              <p>Self-replicating lateral propagation across subnets. Response: Enforce zero-trust network segmentation, isolate local switches, and rotate credentials.</p>
+            </div>
+            <div class="malware-card">
+              <h4>🎣 Phishing</h4>
+              <p>Deceptive communications designed to steal credentials. Response: Invalidate active SSO sessions, enforce biometric FIDO2, and push user advisory email.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security Activity Log Console -->
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">📋 Real-Time Security Activity &amp; Audit Log</span>
+          <span class="code-font" style="color: var(--accent-emerald);">LIVE AUDIT TRAIL</span>
+        </div>
+        <div class="card-body">
+          <div id="adminActivityLogConsole" class="attack-terminal-console" style="height: 180px;">[ SYSTEM ] No activity recorded yet.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- TAB 0.5: User Registration & Self-Service Endpoint Portal -->
+    <div id="tab-user-portal" class="tab-pane">
+      <div class="grid-1-1">
+        <!-- New Registration Form -->
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">📝 Register for CyberShield Endpoint Protection</span>
+            <span class="badge-mitre">FREE HACKATHON ENROLMENT</span>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--text-muted); font-size: 13px; line-height: 1.6; margin-bottom: 14px;">
+              Enrol your mobile device, laptop, or workstation into the autonomous AI defense perimeter. No password required for initial enrolment.
+            </p>
+
+            <div id="userRegReferralNotice" style="display: none; background: rgba(0, 242, 254, 0.1); border: 1px solid var(--accent-cyan); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 14px; color: var(--accent-cyan); font-size: 12px;">
+              🔗 <strong>Referral Registration:</strong> Referred by administrator.
+            </div>
+
+            <div class="registration-grid">
+              <div>
+                <label class="form-label">Full Name</label>
+                <input id="regNameInput" class="form-input" placeholder="e.g. John Doe">
+              </div>
+              <div>
+                <label class="form-label">Phone Number</label>
+                <input id="regPhoneInput" class="form-input" placeholder="+1-555-0199">
+              </div>
+              <div>
+                <label class="form-label">Email Address</label>
+                <input id="regEmailInput" class="form-input" type="email" placeholder="john.doe@example.com">
+              </div>
+              <div>
+                <label class="form-label">Operating System</label>
+                <select id="regOSSelect" class="form-input">
+                  <option value="">Select operating system...</option>
+                  <option value="Android">Android</option>
+                  <option value="iOS">iOS (Apple)</option>
+                  <option value="Windows">Windows</option>
+                  <option value="macOS">macOS</option>
+                  <option value="Linux">Linux</option>
+                  <option value="ChromeOS">ChromeOS</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Device Type</label>
+                <select id="regDeviceSelect" class="form-input">
+                  <option value="">Select device type...</option>
+                  <option value="Mobile Phone">Mobile Phone</option>
+                  <option value="Laptop">Laptop</option>
+                  <option value="Desktop">Desktop</option>
+                  <option value="Tablet">Tablet</option>
+                  <option value="Server">Server</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Network Type</label>
+                <input id="regNetworkInput" class="form-input" placeholder="e.g. Wi-Fi / 5G / Fiber">
+              </div>
+            </div>
+
+            <div style="margin-top: 18px; display: flex; gap: 10px;">
+              <button class="btn-action green" style="padding: 10px 20px; font-size: 13px;" onclick="window.submitUserRegistration()">
+                ✅ Complete Registration
+              </button>
+              <button class="btn-action gray" onclick="window.clearRegistrationForm()">
+                Clear Form
+              </button>
+            </div>
+
+            <div id="userRegistrationResultBox" style="margin-top: 16px;">
+          <div style="background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); border-radius: var(--radius-sm); padding: 14px 18px; color: #fff;">
+            <div style="font-weight: 700; color: var(--accent-emerald); font-size: 15px; margin-bottom: 6px;">
+              ✅ Device Registration Completed Successfully!
+            </div>
+            <div>Assigned Endpoint Protection ID: <strong class="code-font" style="color: var(--accent-cyan); font-size: 16px;">CS50-MVPAPUXC</strong></div>
+            <div style="font-size: 12px; color: #9db1c1; margin-top: 4px;">Save this ID to retrieve or update your device security settings anytime.</div>
+          </div>
+        </div>
+          </div>
+        </div>
+
+        <!-- Edit Existing Registration (Self-Service) & Security Hotline -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <!-- Find & Edit Own Registration -->
+          <div class="cyber-card">
+            <div class="card-header">
+              <span class="card-title">✏️ Edit Existing Registration (Self-Service)</span>
+            </div>
+            <div class="card-body">
+              <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px;">
+                Enter your unique Registration ID (e.g. <code>CS50-DEV01</code>) to retrieve and update your enrolled endpoint info.
+              </p>
+              <div style="display: flex; gap: 10px; margin-bottom: 14px;">
+                <input id="findOwnRegIdInput" class="form-input" placeholder="Registration ID (e.g. CS50-...)">
+                <button class="btn-action blue" onclick="window.findOwnRegistration()">
+                  🔍 Find Registration
+                </button>
+              </div>
+
+              <div id="ownEditArea" style="display: block; border-top: 1px solid rgb(25, 57, 79); padding-top: 14px;">
+                <div class="registration-grid">
+                  <div>
+                    <label class="form-label">Full Name</label>
+                    <input id="ownEditName" class="form-input">
+                  </div>
+                  <div>
+                    <label class="form-label">Phone Number</label>
+                    <input id="ownEditPhone" class="form-input">
+                  </div>
+                  <div>
+                    <label class="form-label">Email</label>
+                    <input id="ownEditEmail" class="form-input">
+                  </div>
+                  <div>
+                    <label class="form-label">Operating System</label>
+                    <select id="ownEditOS" class="form-input">
+                      <option value="Android">Android</option>
+                      <option value="iOS">iOS</option>
+                      <option value="Windows">Windows</option>
+                      <option value="macOS">macOS</option>
+                      <option value="Linux">Linux</option>
+                      <option value="ChromeOS">ChromeOS</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Device Type</label>
+                    <select id="ownEditDevice" class="form-input">
+                      <option value="Mobile Phone">Mobile Phone</option>
+                      <option value="Laptop">Laptop</option>
+                      <option value="Desktop">Desktop</option>
+                      <option value="Tablet">Tablet</option>
+                      <option value="Server">Server</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="form-label">Network</label>
+                    <input id="ownEditNetwork" class="form-input">
+                  </div>
+                </div>
+                <div style="margin-top: 14px;">
+                  <button class="btn-action green" onclick="window.saveOwnRegistration()">
+                    💾 Save Changes
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- End-User Safety Checklist & Direct Support Hotline -->
+          <div class="cyber-card">
+            <div class="card-header">
+              <span class="card-title">🛡️ CyberShield 8-Point End-User Safety Checklist</span>
+              <span class="code-font" style="color: var(--accent-emerald);">PROTECTED</span>
+            </div>
+            <div class="card-body">
+              <ul style="color: var(--text-muted); font-size: 12px; line-height: 1.8; padding-left: 20px; margin-bottom: 16px;">
+                <li>Never share OTPs, two-factor codes, or passwords over the phone or SMS.</li>
+                <li>Do not click unverified links in unexpected emails or WhatsApp messages.</li>
+                <li>Isolate your phone or laptop immediately if anomalous popups appear.</li>
+                <li>Verify Wi-Fi SSIDs before connecting to avoid Rogue Evil-Twin Hotspots.</li>
+                <li>Ensure automated Mobile Shield profiles remain enabled on your smartphone.</li>
+                <li>Back up critical business data regularly to offline cloud storage.</li>
+              </ul>
+              <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="btn-action blue" onclick="window.callSupportHotline()">
+                  📞 Call Security Support
+                </button>
+                <button class="btn-action green" onclick="window.emailSupportHotline()">
+                  📧 Send Incident Report Email
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 1: SOC Live Telemetry -->
+    <div id="tab-soc" class="tab-pane active">
+      <div class="grid-2-1">
+        <!-- Left: Network Visualizer & Flow Chart -->
+        <div>
+          <div class="cyber-card">
+            <div class="card-header">
+              <span class="card-title">🌐 Live Topological Threat &amp; Network Visualizer</span>
+              <span class="code-font" style="color: var(--accent-cyan);">PERIMETER &amp; PHONE SHIELD HUD</span>
+            </div>
+            <div class="card-body" style="padding: 12px;">
+              <div class="threat-map-container">
+                <canvas id="networkVisualizerCanvas" width="1118" height="397"></canvas>
+                <div class="map-overlay-hud">
+                  <div class="hud-legend">
+                    <div class="legend-item"><span class="legend-dot normal"></span> Benign Flow</div>
+                    <div class="legend-item"><span class="legend-dot threat"></span> Attack Beam</div>
+                    <div class="legend-item"><span class="legend-dot dmz"></span> Aegis AI Shield Node</div>
+                  </div>
+                  <div class="code-font" style="font-size: 11px; color: var(--accent-cyan);">60 FPS LIVE STREAM</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cyber-card">
+            <div class="card-header">
+              <span class="card-title">📈 Real-Time Flow Throughput vs Anomaly Deviation</span>
+              <span class="code-font" style="color: var(--text-dim);">SAMPLING INTERVAL: 50ms</span>
+            </div>
+            <div class="card-body" style="padding: 12px; height: 190px;">
+              <canvas id="telemetryChartCanvas" style="width: 100%; height: 100%;" width="1143" height="237"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Real-time Live Alert Feed -->
+        <div>
+          <div class="cyber-card" style="height: calc(100% - 20px);">
+            <div class="card-header">
+              <span class="card-title">🚨 Real-Time Security Incident Stream</span>
+              <span class="code-font" style="color: var(--accent-crimson);">LIVE THREATS</span>
+            </div>
+            <div class="card-body">
+              <div class="alert-feed" id="alertFeed"><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">10:07:30 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>185.220.101.5</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793032650804-337')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793032650804-337')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:46:44 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>142.250.190.46</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793024204845-812')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793024204845-812')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:43:44 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>10.0.4.15</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793024024879-722')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793024024879-722')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">T1071.001</span>
+          <span class="alert-title">MALWARE C2</span>
+          <span class="alert-time">7:42:48 pm</span>
+        </div>
+        <div class="alert-desc">Mobile spyware C2 heartbeat or obfuscated trojan beacon targeting device credentials</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.145</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">core/simulator.js:Lines 230-258</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>43%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793023968608-866')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023968608-866')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">T1071.001</span>
+          <span class="alert-title">MALWARE C2</span>
+          <span class="alert-time">7:42:47 pm</span>
+        </div>
+        <div class="alert-desc">Mobile spyware C2 heartbeat or obfuscated trojan beacon targeting device credentials</div>
+        <div class="alert-meta">
+          <span>SRC: <b>185.220.101.5</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">core/simulator.js:Lines 230-258</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>69%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793023967053-998')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023967053-998')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">7:38:51 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>91.240.118.172</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023731493-830')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">7:38:42 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>45.154.255.89</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023722556-398')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">7:38:34 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>194.26.29.112</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023714380-272')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:37:11 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.145</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793023631314-94')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023631314-94')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">7:36:58 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>91.240.118.172</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023618471-391')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:28:30 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.102</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793023110939-734')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023110939-734')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:06:03 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.102</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793021763068-323')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021763068-323')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:02:26 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.102</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793021546850-205')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021546850-205')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">7:01:08 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>10.0.8.22</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793021468332-315')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021468332-315')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">6:59:48 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>45.154.255.89</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021388716-116')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1498.001</span>
+          <span class="alert-title">DDOS SYN FLOOD</span>
+          <span class="alert-time">6:58:08 pm</span>
+        </div>
+        <div class="alert-desc">High packet volume with disproportionate SYN flags indicating connection state table exhaustion</div>
+        <div class="alert-meta">
+          <span>SRC: <b>91.240.118.172</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">server.js:Lines 42-65</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>87%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <span style="font-size: 11px; color: var(--accent-emerald); font-weight: 600;">✓ Quarantined</span>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021288414-655')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item CRITICAL">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity CRITICAL">CRITICAL</span>
+          <span class="badge-mitre">T1048.003</span>
+          <span class="alert-title">DATA EXFILTRATION</span>
+          <span class="alert-time">6:56:45 pm</span>
+        </div>
+        <div class="alert-desc">Unencrypted sensitive tokens, credit card structures, or identity credentials detected in egress</div>
+        <div class="alert-meta">
+          <span>SRC: <b>185.220.101.129</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">core/dlpEngine.js:Lines 95-142</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>64%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793021205735-451')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021205735-451')">🔍 Forensics</button>
+      </div>
+    </div><div class="alert-item HIGH">
+      <div class="alert-item-content">
+        <div class="alert-item-top">
+          <span class="badge-severity HIGH">HIGH</span>
+          <span class="badge-mitre">N/A</span>
+          <span class="alert-title">ZERO DAY ANOMALY</span>
+          <span class="alert-time">6:56:24 pm</span>
+        </div>
+        <div class="alert-desc">Authorized business operation</div>
+        <div class="alert-meta">
+          <span>SRC: <b>192.168.1.145</b></span>
+          <span>FILE: <b style="color: var(--accent-cyan);">ml/anomaly.js:Lines 72-115</b></span>
+          <span>PHONE SHIELD: <b style="color: var(--accent-emerald);">ARMED</b></span>
+          <span>CONF: <b>15%</b></span>
+        </div>
+      </div>
+      <div class="alert-actions">
+        <button class="btn-mitigate" onclick="window.mitigateAlert('ALT-1793021184593-70')">⚡ Mitigate</button>
+        <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021184593-70')">🔍 Forensics</button>
+      </div>
+    </div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Phone & Mobile Shield (NEW!) -->
+    <div id="tab-mobile" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">📱 Phone &amp; Mobile Endpoint Immediate Defense Shield</span>
+          <span class="code-font" style="color: var(--accent-emerald);">MOBILE FIREWALL GENERATOR</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 20px;">
+            When cyber attacks or intrusions occur, AegisAI automatically shields smartphones and connected mobile devices.
+            It generates immediate, device-level firewall rules for Android (AFWall+ / iptables), Apple iOS MDM configuration profiles (.mobileconfig),
+            and Wi-Fi Hotspot isolation to prevent device takeover, evil twin Wi-Fi attacks, and mobile spyware C2 communication.
+          </p>
+
+          <!-- Connected Devices Grid -->
+          <div class="mobile-device-grid" id="mobileDevicesGrid">
+      <div class="mobile-card">
+        <div class="mobile-header">
+          <div class="mobile-name">
+            <span>📱</span> Samsung Galaxy S24 (Executive Phone)
+          </div>
+          <span class="mobile-platform-tag">Android 14</span>
+        </div>
+        <div class="code-font" style="font-size: 11px; color: var(--text-dim);">IP: 192.168.1.145 | ID: DEV-MOB-01</div>
+        <div class="mobile-status-pill">
+          <span class="status-pulse"></span>
+          <span>SHIELD REINFORCED</span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 4px;">
+          <span>Attacks Dropped: <b>3</b></span>
+          <span style="color: var(--accent-emerald);">Wi-Fi &amp; 5G Protected</span>
+        </div>
+      </div>
+    
+      <div class="mobile-card">
+        <div class="mobile-header">
+          <div class="mobile-name">
+            <span>📱</span> Apple iPhone 16 Pro (SecOps Field Device)
+          </div>
+          <span class="mobile-platform-tag">iOS 18.1</span>
+        </div>
+        <div class="code-font" style="font-size: 11px; color: var(--text-dim);">IP: 192.168.1.189 | ID: DEV-MOB-02</div>
+        <div class="mobile-status-pill">
+          <span class="status-pulse"></span>
+          <span>SHIELD REINFORCED</span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 4px;">
+          <span>Attacks Dropped: <b>3</b></span>
+          <span style="color: var(--accent-emerald);">Wi-Fi &amp; 5G Protected</span>
+        </div>
+      </div>
+    
+      <div class="mobile-card">
+        <div class="mobile-header">
+          <div class="mobile-name">
+            <span>📱</span> Google Pixel 9 (Admin Device)
+          </div>
+          <span class="mobile-platform-tag">GrapheneOS</span>
+        </div>
+        <div class="code-font" style="font-size: 11px; color: var(--text-dim);">IP: 10.0.12.55 | ID: DEV-MOB-03</div>
+        <div class="mobile-status-pill">
+          <span class="status-pulse"></span>
+          <span>SHIELD REINFORCED</span>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; margin-top: 4px;">
+          <span>Attacks Dropped: <b>3</b></span>
+          <span style="color: var(--accent-emerald);">Wi-Fi &amp; 5G Protected</span>
+        </div>
+      </div>
+    </div>
+
+          <!-- Instant Firewall Deployment Generator -->
+          <div class="grid-1-1" style="margin-top: 10px;">
+            <div class="cyber-card" style="margin-bottom: 0;">
+              <div class="card-header">
+                <span class="card-title">🤖 Android Instant Firewall (AFWall+ / iptables)</span>
+                <button class="btn-inspect" onclick="window.downloadAndroidScript()">📥 Download .sh</button>
+              </div>
+              <div class="card-body">
+                <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">
+                  Instantly drops all inbound/outbound packets to the attacker pool on Android phones:
+                </p>
+                <div class="mobile-rule-container" id="androidRulesPreview"># Android iptables (AFWall+ / Termux / Root) - AegisAI Mobile Shield<br>iptables -I INPUT 1 -s 185.220.101.5 -j DROP<br>iptables -I OUTPUT 1 -d 185.220.101.5 -j DROP<br>ip6tables -I INPUT 1 -s 185.220.101.5 -j DROP 2&gt;/dev/null || true<br>ss -K dst 185.220.101.5 2&gt;/dev/null || true</div>
+              </div>
+            </div>
+
+            <div class="cyber-card" style="margin-bottom: 0;">
+              <div class="card-header">
+                <span class="card-title">🍎 Apple iOS MobileConfig Payload</span>
+                <button class="btn-inspect" onclick="window.downloadIosProfile()">📥 Download .mobileconfig</button>
+              </div>
+              <div class="card-body">
+                <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 10px;">
+                  Apple MDM ContentFilter profile blocking malicious attacker IPs across Wi-Fi and 5G cellular:
+                </p>
+                <div class="mobile-rule-container" id="iosRulesPreview">&lt;?xml version="1.0" encoding="UTF-8"?&gt;<br>&lt;plist version="1.0"&gt;<br>&lt;dict&gt;<br>  &lt;key&gt;PayloadDisplayName&lt;/key&gt;<br>  &lt;string&gt;AegisAI Instant iPhone Shield&lt;/string&gt;<br>  &lt;key&gt;PayloadType&lt;/key&gt;<br>  &lt;string&gt;com.apple.webcontent-filter&lt;/string&gt;<br>  &lt;key&gt;BlockedAddresses&lt;/key&gt;<br>  &lt;array&gt;&lt;string&gt;185.220.101.5&lt;/string&gt;&lt;/array&gt;<br>&lt;/dict&gt;<br>&lt;/plist&gt;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Codebase Target & Source Forensics (NEW!) -->
+    <div id="tab-source" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">📍 Codebase Target File &amp; Line Location Forensics</span>
+          <span class="code-font" style="color: var(--accent-cyan);">EXPLOIT REVERSE LOCATOR</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 20px;">
+            AegisAI automatically maps attack vectors directly to the exact source file, function, and line numbers in the application codebase.
+            It provides vulnerable code inspection, CWE classifications, and 1-click in-memory virtual patches to seal the vulnerability in real time.
+          </p>
+
+          <div class="source-locator-box" id="sourceLocatorBox">
+            <div class="source-path-header">
+              <div class="source-path-title">
+                <span>📁 Target Source:</span>
+                <span id="forensicSourceFile" style="color: #fff;">server.js</span>
+                <span class="badge-mitre" id="forensicLineRange">Lines 42-65</span>
+              </div>
+              <div style="display: flex; gap: 8px; align-items: center;">
+                <span class="cwe-badge" id="forensicCwe">CWE-400: Uncontrolled Resource Consumption (Network Denial of Service)</span>
+                <button class="btn-patch-now" id="btnApplyVirtualPatch" onclick="window.applyCurrentPatch()">
+                  <span>⚡</span> Deploy Virtual Patch
+                </button>
+              </div>
+            </div>
+
+            <div style="font-size: 13px; color: var(--text-muted);">
+              <b>Vulnerability Description:</b> <span id="forensicVulnDesc" style="color: #f1f5f9;">TCP socket queue allocation without dynamic ingress SYN-rate backpressure.</span>
+            </div>
+
+            <div class="code-diff-view">
+              <div class="diff-pane vulnerable">
+                <div class="diff-pane-header">
+                  <span>🔴 Targeted Code Snippet in Source File</span>
+                  <span id="forensicTargetFunction">server.on("connection") / Socket Ingress Handler</span>
+                </div>
+                <div class="diff-code-body" id="forensicVulnerableSnippet">// server.js - Socket Ingress Handler<br>const server = http.createServer(async (req, res) =&gt; {<br>  // Vulnerable: High velocity SYN connections exhaust OS socket queue<br>  // before application layer throttling can be engaged.<br>  const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);<br>  ...<br>});</div>
+              </div>
+
+              <div class="diff-pane patched">
+                <div class="diff-pane-header">
+                  <span>🟢 Auto-Generated Virtual Patch (In-Memory Defense)</span>
+                  <span id="patchStatusBadge" style="color: var(--accent-amber);">READY TO DEPLOY</span>
+                </div>
+                <div class="diff-code-body" id="forensicVirtualPatch">// [VIRTUAL PATCH APPLIED: AegisAI SYN-Drop Filter]<br>server.maxConnections = 5000;<br>server.on('connection', (socket) =&gt; {<br>  if (globalThreatShield.isQuarantined(socket.remoteAddress)) {<br>    socket.destroy(); // Instant socket drop under 1ms<br>    return;<br>  }<br>  socket.setTimeout(3000); // Aggressive timeout on half-open SYN handshakes<br>});</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Stealth Cloak & Deception Honeypots (NEW!) -->
+    <div id="tab-stealth" class="tab-pane">
+      <div class="grid-2-1">
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">🕵️ Stealth Cloaking &amp; Anti-Reconnaissance HUD</span>
+            <span class="code-font" style="color: var(--accent-emerald);">RATING: 99.8% OBFUSCATED</span>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--text-muted); margin-bottom: 16px;">
+              Renders the web infrastructure <b>Hard to Discover</b> for automated scanners (Nmap, Shodan, Nikto, Masscan).
+              Masks server signatures and applies delayed tarpits to exhaust scanner memory and resources.
+            </p>
+            <div class="table-wrapper">
+              <table class="cyber-table">
+                <thead>
+                  <tr>
+                    <th>Decoy Traps &amp; Cloaking Modules</th>
+                    <th>Status</th>
+                    <th>Tactical Function</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><b>Server Signature Masking</b></td>
+                    <td><span style="color: var(--accent-emerald); font-weight: 700;">ACTIVE</span></td>
+                    <td>Strips <code>Server</code> and <code>X-Powered-By</code>, returns randomized fake hardware appliance headers.</td>
+                  </tr>
+                  <tr>
+                    <td><b>Port Scan Tarpit</b></td>
+                    <td><span style="color: var(--accent-emerald); font-weight: 700;">ARMED (4,500ms)</span></td>
+                    <td>Deliberately delays aggressive probes to exhaust botnet scanning sockets and freeze scan threads.</td>
+                  </tr>
+                  <tr>
+                    <td><b>Decoy Honeytrap Routes</b></td>
+                    <td><span style="color: var(--accent-emerald); font-weight: 700;">12 TRAPS SET</span></td>
+                    <td>Invisible honeypots: <code>/.env</code>, <code>/wp-login.php</code>, <code>/phpmyadmin</code>, <code>/.git/config</code>.</td>
+                  </tr>
+                  <tr>
+                    <td><b>Silent Drop Mode</b></td>
+                    <td><span style="color: var(--accent-emerald); font-weight: 700;">ACTIVE</span></td>
+                    <td>Silently discards probe packets without responding with TCP RST, preventing service confirmation.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">🍯 Trapped Botnet &amp; Scanner Log</span>
+            <span class="code-font" style="color: var(--accent-amber);">HONEYPOT HITS</span>
+          </div>
+          <div class="card-body">
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 12px;">
+              Automated probes caught in honeypot traps before reaching real files:
+            </p>
+            <div class="alert-feed" id="honeypotFeed" style="max-height: 280px;">
+              <div class="alert-item MEDIUM">
+                <div class="alert-item-content">
+                  <div class="alert-item-top">
+                    <span class="badge-severity MEDIUM">TRAPPED</span>
+                    <span class="alert-title">Probed /.env Decoy Trap</span>
+                  </div>
+                  <div class="alert-desc">Source IP 45.154.255.89 triggered decoy trap; quarantined in tarpit.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Attack Simulator (Expanded to 11 Scenarios!) -->
+    <div id="tab-simulator" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">⚡ Interactive Cyber Attack Simulation Range</span>
+          <span class="code-font" style="color: var(--accent-amber);">11 COMPREHENSIVE VECTORS</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 20px;">
+            Trigger realistic cyber attack scenarios on-demand to observe real-time Machine Learning classification,
+            source file pinpointing, unsupervised anomaly scoring, instant phone shielding, and autonomous quarantine.
+          </p>
+
+          <div class="simulator-grid">
+            <!-- 1. SYN Flood DDoS -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🌊</div>
+                <div>
+                  <div class="scenario-title">SYN Flood DDoS Attack</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1498.001</div>
+                </div>
+              </div>
+              <div class="scenario-desc">High-volume packet flood targeting server socket queue in <code>server.js:Line 42</code>.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('ddos')"><span>⚡</span> Simulate SYN Flood</button>
+            </div>
+
+            <!-- 2. Mobile Spyware / C2 -->
+            <div class="scenario-card" style="border-color: rgba(56, 189, 248, 0.4);">
+              <div class="scenario-header">
+                <div class="scenario-icon">📱</div>
+                <div>
+                  <div class="scenario-title">Mobile Trojan / Pegasus C2</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1437</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Trojan C2 heartbeat on port 9001 attempting to exfiltrate phone SMS/OTP and contacts.</div>
+              <button class="btn-launch-attack" style="border-color: var(--accent-blue);" onclick="window.launchSimulation('mobile_spyware')"><span>📱</span> Simulate Mobile Spyware</button>
+            </div>
+
+            <!-- 3. Rogue Wi-Fi / Evil Twin -->
+            <div class="scenario-card" style="border-color: rgba(16, 185, 129, 0.4);">
+              <div class="scenario-header">
+                <div class="scenario-icon">📡</div>
+                <div>
+                  <div class="scenario-title">Rogue Wi-Fi / DNS Hijack</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1557</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Evil Twin Wi-Fi ARP spoofing and DNS redirection targeting phone connected to local network.</div>
+              <button class="btn-launch-attack" style="border-color: var(--accent-emerald);" onclick="window.launchSimulation('rogue_wifi')"><span>📡</span> Simulate Rogue Wi-Fi</button>
+            </div>
+
+            <!-- 4. SQL Injection -->
+            <div class="scenario-card" style="border-color: rgba(245, 158, 11, 0.4);">
+              <div class="scenario-header">
+                <div class="scenario-icon">💉</div>
+                <div>
+                  <div class="scenario-title">SQL Injection Breach</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1190</div>
+                </div>
+              </div>
+              <div class="scenario-desc">SQL tautology injection (<code>' OR '1'='1 --</code>) targeting <code>databaseGateway.js:Line 24</code>.</div>
+              <button class="btn-launch-attack" style="border-color: var(--accent-amber);" onclick="window.launchSimulation('sql_injection')"><span>💉</span> Simulate SQL Injection</button>
+            </div>
+
+            <!-- 5. Path Traversal -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">📂</div>
+                <div>
+                  <div class="scenario-title">Directory Path Traversal</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1083</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Attempt to escape web root (<code>/../../windows/system.ini</code>) targeting <code>server.js:Line 185</code>.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('path_traversal')"><span>📂</span> Simulate Path Traversal</button>
+            </div>
+
+            <!-- 6. Honeypot Decoy Trip -->
+            <div class="scenario-card" style="border-color: rgba(139, 92, 246, 0.4);">
+              <div class="scenario-header">
+                <div class="scenario-icon">🍯</div>
+                <div>
+                  <div class="scenario-title">Honeypot Decoy Trap Trip</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1595</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Botnet scanner probes non-existent decoy <code>/.env</code>, triggering immediate autonomous quarantine.</div>
+              <button class="btn-launch-attack" style="border-color: var(--accent-violet);" onclick="window.launchSimulation('honeypot_trap')"><span>🍯</span> Simulate Honeypot Trip</button>
+            </div>
+
+            <!-- 7. Port Sweep -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🔍</div>
+                <div>
+                  <div class="scenario-title">Reconnaissance Port Sweep</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1046</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Horizontal stealth port scan sweeping across 15+ services generating high port entropy.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('port_scan')"><span>⚡</span> Simulate Port Sweep</button>
+            </div>
+
+            <!-- 8. SSH Brute Force -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🔑</div>
+                <div>
+                  <div class="scenario-title">SSH Credential Brute Force</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1110.001</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Rapid dictionary authentication attempts against root account targeting <code>core/idsUeba.js:Line 58</code>.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('brute_force')"><span>⚡</span> Simulate Brute Force</button>
+            </div>
+
+            <!-- 9. Impossible Travel -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">✈️</div>
+                <div>
+                  <div class="scenario-title">Impossible Travel Hijacking</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1078</div>
+                </div>
+              </div>
+              <div class="scenario-desc">User logs in from New York, then 5 min later from Moscow (velocity &gt; 90,000 km/h) triggering session revocation.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('impossible_travel')"><span>⚡</span> Simulate Impossible Travel</button>
+            </div>
+
+            <!-- 10. Data Exfiltration -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">💳</div>
+                <div>
+                  <div class="scenario-title">Sensitive Data Exfiltration (DLP)</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1048.003</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Egress transfer containing Credit Cards (Luhn verified) and SSNs targeting <code>core/dlpEngine.js:Line 95</code>.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('data_exfil')"><span>⚡</span> Simulate Data Exfiltration</button>
+            </div>
+
+            <!-- 11. Zero-Day Anomaly -->
+            <div class="scenario-card">
+              <div class="scenario-header">
+                <div class="scenario-icon">🧬</div>
+                <div>
+                  <div class="scenario-title">Zero-Day Network Anomaly</div>
+                  <div class="scenario-mitre">MITRE ATT&amp;CK: T1205</div>
+                </div>
+              </div>
+              <div class="scenario-desc">Atypical multivariate deviation targeting <code>ml/anomaly.js:Line 72</code> detected by unsupervised AI.</div>
+              <button class="btn-launch-attack" onclick="window.launchSimulation('zero_day')"><span>⚡</span> Simulate Zero-Day</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Incident Center & Raw PCAP Hex -->
+    <div id="tab-incidents" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">🚨 Incident Center, Source Locations &amp; Hex PCAP Inspector</span>
+          <span class="code-font" style="color: var(--accent-cyan);">ENTERPRISE SOC LOG</span>
+        </div>
+        <div class="card-body">
+          <div class="table-wrapper">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Incident ID</th>
+                  <th>Severity</th>
+                  <th>Threat Vector</th>
+                  <th>Source IP</th>
+                  <th>Targeted Source File</th>
+                  <th>AI Confidence</th>
+                  <th>Phone Shield</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="alertTableBody">
+      <tr>
+        <td class="code-font">ALT-1793032650804-337</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">185.220.101.5</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793032650804-337')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793032650804-337')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793024204845-812</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">142.250.190.46</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793024204845-812')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793024204845-812')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793024024879-722</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">10.0.4.15</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793024024879-722')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793024024879-722')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023968608-866</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>MALWARE C2</b></td>
+        <td class="code-font">192.168.1.145</td>
+        <td class="code-font" style="color: var(--accent-cyan);">core/simulator.js (Lines 230-258)</td>
+        <td><b>43%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023968608-866')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793023968608-866')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023967053-998</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>MALWARE C2</b></td>
+        <td class="code-font">185.220.101.5</td>
+        <td class="code-font" style="color: var(--accent-cyan);">core/simulator.js (Lines 230-258)</td>
+        <td><b>69%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023967053-998')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793023967053-998')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023731493-830</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">91.240.118.172</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023731493-830')">Forensics</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023722556-398</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023722556-398')">Forensics</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023714380-272</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">194.26.29.112</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023714380-272')">Forensics</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023631314-94</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.145</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023631314-94')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793023631314-94')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023618471-391</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">91.240.118.172</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023618471-391')">Forensics</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793023110939-734</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.102</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793023110939-734')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793023110939-734')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021763068-323</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.102</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021763068-323')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793021763068-323')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021546850-205</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.102</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021546850-205')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793021546850-205')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021468332-315</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">10.0.8.22</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021468332-315')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793021468332-315')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021388716-116</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">45.154.255.89</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021388716-116')">Forensics</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021288414-655</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DDOS SYN FLOOD</b></td>
+        <td class="code-font">91.240.118.172</td>
+        <td class="code-font" style="color: var(--accent-cyan);">server.js (Lines 42-65)</td>
+        <td><b>87%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">MITIGATED</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021288414-655')">Forensics</button>
+          
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021205735-451</td>
+        <td><span class="badge-severity CRITICAL">CRITICAL</span></td>
+        <td><b>DATA EXFILTRATION</b></td>
+        <td class="code-font">185.220.101.129</td>
+        <td class="code-font" style="color: var(--accent-cyan);">core/dlpEngine.js (Lines 95-142)</td>
+        <td><b>64%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021205735-451')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793021205735-451')">Block</button>
+        </td>
+      </tr>
+    
+      <tr>
+        <td class="code-font">ALT-1793021184593-70</td>
+        <td><span class="badge-severity HIGH">HIGH</span></td>
+        <td><b>ZERO DAY ANOMALY</b></td>
+        <td class="code-font">192.168.1.145</td>
+        <td class="code-font" style="color: var(--accent-cyan);">ml/anomaly.js (Lines 72-115)</td>
+        <td><b>15%</b></td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">✓ SHIELDED</span></td>
+        <td><span style="color: var(--accent-crimson); font-weight: 600;">ACTIVE</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.inspectAlert('ALT-1793021184593-70')">Forensics</button>
+          <button class="btn-mitigate" style="margin-left: 6px;" onclick="window.mitigateAlert('ALT-1793021184593-70')">Block</button>
+        </td>
+      </tr>
+    </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: AI & ML Analytics -->
+    <div id="tab-ai" class="tab-pane">
+      <div class="grid-1-1">
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">🧠 Supervised Threat Classifier Architecture</span>
+            <span class="badge-mitre">GRADIENT-TREE ENSEMBLE</span>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <b>Model Specification:</b>
+                <div class="code-font" style="color: var(--accent-cyan); margin-top: 4px;">Aegis Ensemble Gradient-Tree v3.4</div>
+              </div>
+              <div>
+                <b>Trained Feature Inputs:</b>
+                <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+                  <span class="badge-mitre">packet_rate</span>
+                  <span class="badge-mitre">byte_rate</span>
+                  <span class="badge-mitre">syn_ratio</span>
+                  <span class="badge-mitre">rst_ratio</span>
+                  <span class="badge-mitre">port_entropy</span>
+                  <span class="badge-mitre">payload_entropy</span>
+                  <span class="badge-mitre">failed_auth_count</span>
+                  <span class="badge-mitre">sensitive_match_count</span>
+                </div>
+              </div>
+              <div>
+                <b>Explainable AI (XAI) Attribution:</b>
+                <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+                  Every threat decision includes automated feature attribution, identifying exactly which statistical deviations triggered the classification to assist SOC analysts in root cause analysis.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">📊 Unsupervised Dynamic Isolation Anomaly Engine</span>
+            <span class="badge-mitre">MULTIVARIATE DISTANCE</span>
+          </div>
+          <div class="card-body">
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <b>Continuous Baseline Learning:</b>
+                <div style="color: var(--accent-emerald); font-size: 13px; font-weight: 600; margin-top: 4px;">
+                  ✓ Actively adapting rolling Gaussian centroid from verified benign flows
+                </div>
+              </div>
+              <div>
+                <b>Dynamic Anomaly Threshold:</b>
+                <div class="code-font" style="color: var(--accent-amber); margin-top: 4px;">0.65 (98.5th Percentile Deviation)</div>
+              </div>
+              <div>
+                <b>Zero-Day Resilience:</b>
+                <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+                  Calculates standardized Mahalanobis distance across 6 feature dimensions. Detects polymorphic payloads, covert channels, and novel zero-day exploits without requiring prior signature rules.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 8: Identity & UEBA -->
+    <div id="tab-ueba" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">👤 User and Entity Behavior Analytics (UEBA) Stream</span>
+          <span class="code-font" style="color: var(--accent-blue);">AUTHENTICATION RADAR</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 16px;">
+            Continuously monitors login frequency, impossible travel between geographic coordinates, and credential stuffing attempts.
+          </p>
+          <div class="table-wrapper">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Target Account</th>
+                  <th>Source IP</th>
+                  <th>Geographic Location</th>
+                  <th>Auth Status</th>
+                  <th>Entity Risk Score</th>
+                  <th>Behavioral Analysis</th>
+                </tr>
+              </thead>
+              <tbody id="uebaTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 9: Data Protection & DLP -->
+    <div id="tab-dlp" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">🔒 Data Loss Prevention (DLP) &amp; Sensitive Egress Monitor</span>
+          <span class="badge-mitre">PCI-DSS / HIPAA / SOC 2</span>
+        </div>
+        <div class="card-body">
+          <p style="color: var(--text-muted); margin-bottom: 16px;">
+            Deep Packet Inspection (DPI) verifies payload data in real-time, executing Luhn checksum validation on Credit Cards and regex parsing for SSNs and cloud API keys.
+          </p>
+          <div class="table-wrapper">
+            <table class="cyber-table">
+              <thead>
+                <tr>
+                  <th>Timestamp</th>
+                  <th>Source Asset</th>
+                  <th>Destination Target</th>
+                  <th>Compliance Standard</th>
+                  <th>Patterns Found</th>
+                  <th>Masked Preview</th>
+                  <th>Enforcement Action</th>
+                </tr>
+              </thead>
+              <tbody id="dlpTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 10: Active Defense & Firewall -->
+    <div id="tab-firewall" class="tab-pane">
+      <div class="grid-2-1">
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">🛡️ Quarantined IP Blacklist</span>
+            <span class="code-font" style="color: var(--accent-emerald);">AUTOMATED ACTIVE DROP</span>
+          </div>
+          <div class="card-body">
+            <div class="table-wrapper">
+              <table class="cyber-table">
+                <thead>
+                  <tr>
+                    <th>Offending IP Address</th>
+                    <th>Quarantine Reason</th>
+                    <th>Blocked At</th>
+                    <th>Firewall Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="firewallTableBody">
+      <tr>
+        <td class="code-font"><b style="color: var(--accent-crimson);">91.240.118.172</b></td>
+        <td>Autonomous block: Detected DDOS_SYN_FLOOD (Confidence: 87%)</td>
+        <td class="code-font">6:58:08 pm</td>
+        <td><span style="color: var(--accent-emerald); font-weight: 600;">ACTIVE DROP</span></td>
+        <td>
+          <button class="btn-inspect" onclick="window.unblockIp('91.240.118.172')">Unblock</button>
+        </td>
+      </tr>
+    </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="cyber-card">
+          <div class="card-header">
+            <span class="card-title">⚙️ Manual Quarantine Control</span>
+          </div>
+          <div class="card-body">
+            <div class="form-group" style="margin-bottom: 12px;">
+              <label class="form-label">IP Address to Block</label>
+              <input type="text" id="manualBlockIpInput" class="form-input" placeholder="e.g. 198.51.100.42">
+            </div>
+            <div class="form-group" style="margin-bottom: 16px;">
+              <label class="form-label">Quarantine Reason</label>
+              <input type="text" id="manualBlockReasonInput" class="form-input" placeholder="Suspicious activity / threat intelligence">
+            </div>
+            <button class="btn-launch-attack" style="width: 100%; justify-content: center;" onclick="
+              const ip = document.getElementById('manualBlockIpInput').value.trim();
+              const reason = document.getElementById('manualBlockReasonInput').value.trim();
+              if (ip) {
+                fetch('/api/firewall/block', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ ip, reason })
+                }).then(() =&gt; location.reload());
+              }
+            ">
+              Apply Quarantine Rule
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 11: Deep Security Settings (NEW!) -->
+    <div id="tab-settings" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">⚙️ Deep Cybersecurity, Mobile Shield &amp; Cloaking Configuration</span>
+          <button class="btn-mitigate" onclick="window.saveSettings()">💾 Save &amp; Enforce Settings</button>
+        </div>
+        <div class="card-body">
+          <div class="settings-section-card">
+            <div class="settings-header">
+              <div class="settings-title">📱 Phone &amp; Mobile Device Shield Controls</div>
+              <div class="settings-desc">Manage real-time endpoint firewall generation and emergency device lockdown parameters.</div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Autonomous Mobile Firewall Deployment</div>
+                <div class="setting-subtext">Automatically pushes Android AFWall+ and Apple iOS MDM profiles whenever an IP is flagged.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingAutoMobile" checked="">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Rogue Wi-Fi &amp; Hotspot Guard</div>
+                <div class="setting-subtext">Isolates wireless AP clients and blocks ARP poisoning attacks against connected phones.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingHotspotGuard" checked="">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="settings-section-card">
+            <div class="settings-header">
+              <div class="settings-title">🕵️ Stealth Cloaking &amp; Deception Honeypots (Hard to Discover)</div>
+              <div class="settings-desc">Control server obfuscation, decoy honeytraps, and botnet scanner tarpits.</div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Anti-Fingerprinting Stealth Headers</div>
+                <div class="setting-subtext">Strips revealing Server/Express headers and returns deceptive hardware appliance signatures.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingStealthHeaders" checked="">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Scanner Port Tarpit</div>
+                <div class="setting-subtext">Artificially stalls aggressive port probes to consume scanner resources and memory.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingTarpit" checked="">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Tarpit Stall Delay (Milliseconds)</div>
+                <div class="setting-subtext">How long automated scanners are tied up before returning a decoy response.</div>
+              </div>
+              <input type="number" id="settingTarpitDelay" class="form-input" style="width: 120px;" value="4500" min="500" max="15000">
+            </div>
+          </div>
+
+          <div class="settings-section-card">
+            <div class="settings-header">
+              <div class="settings-title">🧠 AI Engine Sensitivity &amp; Anomaly Boundaries</div>
+              <div class="settings-desc">Fine-tune the Mahalanobis distance cutoff and false-positive reduction thresholds.</div>
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Unsupervised Anomaly Boundary Cutoff</div>
+                <div class="setting-subtext">Traffic with combined deviation score above this value triggers an immediate anomaly alert.</div>
+              </div>
+              <input type="number" id="settingAnomalyThreshold" class="form-input" style="width: 120px;" value="0.65" step="0.05" min="0.30" max="0.95">
+            </div>
+
+            <div class="setting-item">
+              <div class="setting-details">
+                <div class="setting-label">Autonomous Auto-Block Mode</div>
+                <div class="setting-subtext">Instantly block IP when AI confidence exceeds 75% on High/Critical threats.</div>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="settingAutoBlock" checked="">
+                <span class="slider-switch"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 12: Security Audit Reports -->
+    <div id="tab-reports" class="tab-pane">
+      <div class="cyber-card">
+        <div class="card-header">
+          <span class="card-title">📄 Security Audit &amp; Forensic Incident Report</span>
+          <button id="btnExportReport" class="btn-mitigate">📥 Export JSON Audit Report</button>
+        </div>
+        <div class="card-body">
+          <div style="background: rgba(11, 17, 30, 0.7); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; font-family: var(--font-sans);">
+            <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 16px;">
+              <div>
+                <h2 style="font-size: 20px; color: #fff;">AegisAI Enterprise Threat, Phone Shield &amp; Incident Audit Report</h2>
+                <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Audit Framework: NIST SP 800-61 Rev. 2, ISO/IEC 27001:2022 &amp; CIS Controls v8</div>
+              </div>
+              <div style="text-align: right;">
+                <span class="status-pill" style="display: inline-flex;">VERIFIED PROTECTED</span>
+              </div>
+            </div>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">1. Executive Summary</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+              During the active monitoring window, the AegisAI autonomous cyber defense engine continuously analyzed network flows across edge ingress, DMZ servers, internal database segments, and connected mobile phone endpoints. Using ensemble machine learning, unsupervised anomaly scoring, and instant mobile firewall profiles, zero-day deviations and active attack vectors were quarantined within milliseconds.
+            </p>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">2. Phone &amp; Endpoint Shield Status</h3>
+            <ul style="color: var(--text-muted); padding-left: 20px; line-height: 1.8; margin-bottom: 16px;">
+              <li><b>Android Devices:</b> Automated AFWall+ iptables rules active; lateral movement blocked.</li>
+              <li><b>Apple iOS Devices:</b> MDM ContentFilter profiles deployed; rogue C2 communication sinkholed.</li>
+              <li><b>Wi-Fi Hotspot Defense:</b> AP client isolation enforced; evil-twin ARP poisoning mitigated.</li>
+            </ul>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">3. Codebase Source Location Pinpointing &amp; Virtual Patching</h3>
+            <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+              Every detected threat vector was pinpointed to its exact codebase source file and line range (e.g. <code>server.js:Line 42</code>, <code>core/idsUeba.js:Line 58</code>, <code>core/dlpEngine.js:Line 95</code>). Virtual patches were generated and applied to eliminate exploit windows without application downtime.
+            </p>
+
+            <h3 style="font-size: 15px; color: var(--accent-cyan); margin-bottom: 8px;">4. Recommended Security Actions</h3>
+            <p style="color: var(--text-muted); line-height: 1.6;">
+              Commit auto-generated firewall rules to edge BGP routing tables. Maintain active mobile shield profiles on all corporate smartphones.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Deep Forensic Inspection Modal with Hex PCAP, Source Forensics & Mobile Shield -->
+  <div id="inspectModal" class="modal-backdrop">
+    <div class="cyber-modal">
+      <div class="modal-header">
+        <span class="modal-title">🔍 Comprehensive Incident Forensics, Source Code &amp; Phone Shield</span>
+        <button class="modal-close" onclick="document.getElementById('inspectModal').classList.remove('show')">✕</button>
+      </div>
+      <div class="modal-body" id="inspectModalContent">
+        <!-- Injected by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Floating Security Alert (from File 1) -->
+  <div id="globalSecurityAlert" class="global-floating-alert" style="display: none;">
+    <button class="floating-alert-close" onclick="window.closeGlobalAlert()">×</button>
+    <h3>🚨 SECURITY INCIDENT ALERT</h3>
+    <p id="globalAlertMessage">A simulated suspicious security event was detected during the 5-minute watchdog check.</p>
+    <div style="display: flex; gap: 8px;">
+      <button id="alertCallUserBtn" class="btn-action blue" onclick="window.globalAlertCallUser()">📞 Call User</button>
+      <button id="alertEmailUserBtn" class="btn-action green" onclick="window.globalAlertEmailUser()">📧 Safety Email</button>
+    </div>
+  </div>
+
+  <!-- RBAC Switcher & Quick Auth Modal -->
+  <div id="rbacModal" class="full-overlay-modal">
+    <div class="rbac-modal-card">
+      <button class="floating-alert-close" onclick="window.closeRbacModal()">×</button>
+      <div style="font-size: 38px; text-align: center; margin-bottom: 6px;">🔐</div>
+      <h3 style="color: var(--accent-cyan); text-align: center; margin-bottom: 4px;">Role-Based Access Control (RBAC)</h3>
+      <p style="color: var(--text-muted); text-align: center; font-size: 12px; margin-bottom: 18px;">
+        Switch identity instantly for testing or log in with administrator credentials.
+      </p>
+
+      <div style="margin-bottom: 18px;">
+        <div style="font-size: 11px; text-transform: uppercase; color: #849bac; font-weight: 700; margin-bottom: 8px;">
+          ⚡ Quick 1-Click Role Switcher (Hackathon Demo Mode)
+        </div>
+        <button class="role-quick-btn active" id="btnRoleSuperAdmin" onclick="window.switchRbacRole('SUPER_ADMIN')">
+          <span>👑 <b>SUNNY</b> • Super Administrator (Master Access)</span>
+          <span class="role-badge SUPER_ADMIN">SUPER_ADMIN</span>
+        </button>
+        <button class="role-quick-btn" id="btnRoleAdmin" onclick="window.switchRbacRole('ADMIN')">
+          <span>🛡️ <b>Alex Rivera</b> • Lead Security Admin (Operations)</span>
+          <span class="role-badge ADMIN">ADMIN</span>
+        </button>
+        <button class="role-quick-btn" id="btnRoleOperator" onclick="window.switchRbacRole('SOC_OPERATOR')">
+          <span>🛰️ <b>Sarah Chen</b> • SOC Tier-2 Operator (Triage/Audits)</span>
+          <span class="role-badge SOC_OPERATOR">SOC_OPERATOR</span>
+        </button>
+        <button class="role-quick-btn" id="btnRoleUser" onclick="window.switchRbacRole('REGISTERED_USER')">
+          <span>👤 <b>Michael Scott</b> • Protected Endpoint User</span>
+          <span class="role-badge REGISTERED_USER">USER</span>
+        </button>
+        <button class="role-quick-btn" id="btnRoleGuest" onclick="window.switchRbacRole('PUBLIC_GUEST')">
+          <span>🌐 <b>Public Guest</b> • Unauthenticated Visitor</span>
+          <span class="role-badge PUBLIC_GUEST">GUEST</span>
+        </button>
+      </div>
+
+      <div style="border-top: 1px solid #19394f; padding-top: 14px;">
+        <div style="font-size: 11px; text-transform: uppercase; color: #849bac; font-weight: 700; margin-bottom: 8px;">
+          🔑 Or Authenticate with Credentials
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <input id="rbacAuthUsername" class="form-input" placeholder="Username (e.g. SUNNY)">
+          <input id="rbacAuthPassword" class="form-input" type="password" placeholder="Password (e.g. MONKEY)">
+          <div id="rbacAuthError" style="color: var(--accent-crimson); font-size: 12px;"></div>
+          <div style="display: flex; gap: 8px; margin-top: 4px;">
+            <button class="btn-action green" style="flex: 1; justify-content: center; padding: 10px;" onclick="window.performRbacLogin()">
+              🔓 Sign In
+            </button>
+            <button class="btn-action gray" onclick="window.performRbacLogout()">
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CyberShield 50 Public Landing Portal Modal (from File 1) -->
+  <div id="publicLandingModal" class="full-overlay-modal active">
+    <div class="landing-card-wrapper">
+      <button class="floating-alert-close" onclick="window.closePublicPortal()">×</button>
+      <div class="landing-hero-icon">🛡️</div>
+      <h1 class="landing-hero-title">CyberShield 50</h1>
+      <div class="subtitle" style="color: var(--accent-cyan); font-weight: 700; margin-bottom: 12px; font-size: 14px;">
+        Cyber Security, Data Privacy &amp; Autonomous Threat Defense
+      </div>
+      <p class="landing-hero-desc">
+        A unified cybersecurity hackathon demonstration for registering protected users, monitoring real-time security events,
+        generating early warnings, and providing autonomous malware safety support across mobile phones, laptops, and enterprise infrastructure.
+      </p>
+
+      <div class="landing-choices-grid">
+        <div class="landing-choice-card">
+          <div class="landing-choice-icon">👤</div>
+          <div class="landing-choice-title">User Registration</div>
+          <div class="landing-choice-desc">
+            Register your name, phone, email, operating system, and network/device information for active protection.
+          </div>
+          <button class="btn-action green" style="width: 100%; justify-content: center; padding: 12px;" onclick="window.portalGoToRegistration()">
+            Register as User
+          </button>
+        </div>
+
+        <div class="landing-choice-card">
+          <div class="landing-choice-icon">🔐</div>
+          <div class="landing-choice-title">Admin Control Portal</div>
+          <div class="landing-choice-desc">
+            Authorized administrators can manage registrations, referrals, threat alerts, and automated security monitoring.
+          </div>
+          <button class="btn-action blue" style="width: 100%; justify-content: center; padding: 12px;" onclick="window.portalGoToAdmin()">
+            Admin Control Center
+          </button>
+        </div>
+
+        <div class="landing-choice-card">
+          <div class="landing-choice-icon">🛰️</div>
+          <div class="landing-choice-title">SOC Telemetry Stream</div>
+          <div class="landing-choice-desc">
+            Access 60 FPS topological threat visualizer, AI gradient-tree telemetry, and active packet inspection HUD.
+          </div>
+          <button class="btn-action yellow" style="width: 100%; justify-content: center; padding: 12px;" onclick="window.portalGoToSoc()">
+            View Live SOC HUD
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Edit User Modal -->
+  <div id="adminEditUserModal" class="full-overlay-modal">
+    <div class="rbac-modal-card" style="max-width: 500px;">
+      <button class="floating-alert-close" onclick="window.closeEditUserModal()">×</button>
+      <h3 style="color: var(--accent-cyan); margin-bottom: 14px;">✏️ Edit User Registration</h3>
+      <input type="hidden" id="modalEditUserId">
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div>
+          <label class="form-label">Full Name</label>
+          <input id="modalEditUserName" class="form-input">
+        </div>
+        <div>
+          <label class="form-label">Phone Number</label>
+          <input id="modalEditUserPhone" class="form-input">
+        </div>
+        <div>
+          <label class="form-label">Email</label>
+          <input id="modalEditUserEmail" class="form-input" type="email">
+        </div>
+        <div>
+          <label class="form-label">Operating System</label>
+          <select id="modalEditUserOS" class="form-input">
+            <option value="Android">Android</option>
+            <option value="iOS">iOS</option>
+            <option value="Windows">Windows</option>
+            <option value="macOS">macOS</option>
+            <option value="Linux">Linux</option>
+            <option value="ChromeOS">ChromeOS</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Device Type</label>
+          <select id="modalEditUserDevice" class="form-input">
+            <option value="Mobile Phone">Mobile Phone</option>
+            <option value="Laptop">Laptop</option>
+            <option value="Desktop">Desktop</option>
+            <option value="Tablet">Tablet</option>
+            <option value="Server">Server</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Network</label>
+          <input id="modalEditUserNetwork" class="form-input">
+        </div>
+        <div>
+          <label class="form-label">Protection Status</label>
+          <select id="modalEditUserStatus" class="form-input">
+            <option value="PROTECTED">PROTECTED</option>
+            <option value="WARNING - REVIEW">WARNING - REVIEW</option>
+            <option value="QUARANTINED">QUARANTINED</option>
+          </select>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 6px;">
+          <button class="btn-action green" style="flex: 1; justify-content: center; padding: 10px;" onclick="window.saveUserModalEdit()">
+            💾 Save Changes
+          </button>
+          <button class="btn-action gray" onclick="window.closeEditUserModal()">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+
+
+</body></html>
